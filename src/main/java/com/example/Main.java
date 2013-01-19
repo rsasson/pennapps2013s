@@ -4,6 +4,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 import com.mongodb.DB;
+import com.mongodb.Mongo;
 import com.mongodb.MongoURI;
 
 /**
@@ -29,10 +30,6 @@ public class Main {
         if (webPort == null || webPort.isEmpty()) {
             webPort = "8080";
         }
-
-        MongoURI mongoURI = new MongoURI(System.getenv("mongodb://<user>:<password>@linus.mongohq.com:10097/app11106582"));
-        mongo = mongoURI.connectDB();
-        mongo.authenticate(mongoURI.getUsername(), mongoURI.getPassword());
         
         Server server = new Server(Integer.valueOf(webPort));
         WebAppContext root = new WebAppContext();
@@ -41,6 +38,11 @@ public class Main {
         root.setDescriptor(webappDirLocation + "/WEB-INF/web.xml");
         root.setResourceBase(webappDirLocation);
 
+        mongo = new Mongo("linus.mongohq.com", 10097).getDB("app11106582");
+        Boolean b = mongo.authenticate("heroku", "borat".toCharArray());
+        
+        System.out.println("authentication status " + b);
+        
         // Parent loader priority is a class loader setting that Jetty accepts.
         // By default Jetty will behave like most web containers in that it will
         // allow your application to replace non-server libraries that are part of the
