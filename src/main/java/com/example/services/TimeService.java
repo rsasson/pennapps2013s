@@ -52,12 +52,14 @@ public class TimeService {
 			@QueryParam("phone") String phone,
 			@QueryParam("email") String email){
 		
+		System.out.println("firstname=" + firstname + " lastname=" + lastname);
+		
 		DBCollection coll = db.getCollection("profile");
 		
-		BasicDBObject doc = new BasicDBObject ("firstname",firstname).
-				append("lastname",lastname).
-				append("phone",phone).
-				append("email", email);
+		BasicDBObject doc = new BasicDBObject ("firstname","Borat").
+				append("lastname","Sagdiyev").
+				append("phone","0000000000").
+				append("email", "fyouuzbekistan@kazakh.net");
 		
 		coll.insert(doc);
 		
