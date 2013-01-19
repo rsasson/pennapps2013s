@@ -3,6 +3,9 @@ package com.example;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 
+import com.mongodb.DB;
+import com.mongodb.MongoURI;
+
 /**
  *
  * This class launches the web application in an embedded Jetty container.
@@ -12,6 +15,8 @@ import org.eclipse.jetty.webapp.WebAppContext;
  */
 public class Main {
 
+	public static DB mongo = null;
+	
     /**
      * @param args
      */
@@ -25,6 +30,10 @@ public class Main {
             webPort = "8080";
         }
 
+        MongoURI mongoURI = new MongoURI(System.getenv("mongodb://<user>:<password>@linus.mongohq.com:10097/app11106582"));
+        mongo = mongoURI.connectDB();
+        mongo.authenticate(mongoURI.getUsername(), mongoURI.getPassword());
+        
         Server server = new Server(Integer.valueOf(webPort));
         WebAppContext root = new WebAppContext();
 
