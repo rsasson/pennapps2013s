@@ -55,7 +55,7 @@ public class TimeService {
 	
 	@POST
 	@Path("contact/{firstname}/{lastname}/{phone}/{email}")
-	public Response addContact( 
+	public Response addProfile( 
 			@PathParam("firstname") String firstname,
 			@PathParam("lastname") String lastname,
 			@PathParam("phone") String phone,
@@ -71,28 +71,26 @@ public class TimeService {
 		coll.insert(doc);
 		
 		return Response.status(201)
-				.entity("addContact is called, firstname: "+firstname+", lastname: "+lastname
+				.entity("addProfile is called, firstname: "+firstname+", lastname: "+lastname
 						+", phone: "+phone+", email: "+email)
 				.build();
 	}
 	
 	@POST
-	@Path("group/{admin_id}/{label}/{location}")
+	@Path("group/{label}/{location}")
 	public Response createGroup(
-			@QueryParam("admin_id") String admin_id,
 			@QueryParam("label") String label,
 			@QueryParam("location") String location){
 		
 			DBCollection coll = db.getCollection("group");
 		
-			BasicDBObject doc = new BasicDBObject("admin_id", admin_id).
-				append("label", label).
+			BasicDBObject doc = new BasicDBObject("label", label).
 				append("location", location);
 		
 			coll.insert(doc);
 				
 			return Response.status(201)
-			.entity("addContact is called, admin: "+admin_id+", label: "+label+", location: "+location)
+			.entity("addContact is called, label: "+label+", location: "+location)
 			.build();
 	}
 	
