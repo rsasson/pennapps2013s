@@ -24,7 +24,9 @@ public class TimeService {
 	
 	
 	@GET
-    public String get(){
+	@Path("profile/{user-id}")
+    public String getProfile(
+    		@PathParam("user_id") String user_id){
     	
 		DBCollection coll = db.getCollection("profile");
 		
@@ -40,6 +42,15 @@ public class TimeService {
     	}
     	
     	return element.toString();
+    }
+	
+	@GET
+	@Path("retrieve/{label}")
+    public String getContactList(
+    		@PathParam("label") String label){
+    	
+		DBCollection coll = db.getCollection("group");
+		return "";
     }
 	
 	@POST
@@ -71,9 +82,17 @@ public class TimeService {
 			@QueryParam("admin_id") String admin_id,
 			@QueryParam("label") String label,
 			@QueryParam("location") String location){
+		
+			DBCollection coll = db.getCollection("group");
+		
+			BasicDBObject doc = new BasicDBObject("admin_id", admin_id).
+				append("label", label).
+				append("location", location);
+		
+			coll.insert(doc);
 				
 			return Response.status(201)
-			.entity("addContact is called, admin: "+admin_id+", label: "+label)
+			.entity("addContact is called, admin: "+admin_id+", label: "+label+", location: "+location)
 			.build();
 	}
 	
