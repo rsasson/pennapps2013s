@@ -1,19 +1,16 @@
 package com.example.services;
 
-import java.util.Set;
-
 import com.example.Main;
-import com.example.models.Time;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -42,42 +39,43 @@ public class TimeService {
     		cursor.close();
     	}
     	
-    	return "";
+    	return element.toString();
     }
 	
 	@POST
-	public Response addContact(
-			@QueryParam("firstname") String firstname,
-			@QueryParam("lastname") String lastname,
-			@QueryParam("phone") String phone,
-			@QueryParam("email") String email){
-		
-		System.out.println("firstname=" + firstname + " lastname=" + lastname);
-		
+	@Path("contact/{firstname}/{lastname}/{phone}/{email}")
+	public Response addContact( 
+			@PathParam("firstname") String firstname,
+			@PathParam("lastname") String lastname,
+			@PathParam("phone") String phone,
+			@PathParam("email") String email){
+				
 		DBCollection coll = db.getCollection("profile");
 		
-		BasicDBObject doc = new BasicDBObject ("firstname","Borat").
-				append("lastname","Sagdiyev").
-				append("phone","0000000000").
-				append("email", "fyouuzbekistan@kazakh.net");
+		BasicDBObject doc = new BasicDBObject("firstname", firstname).
+				append("lastname", lastname).
+				append("phone", phone).
+				append("email", email);
 		
 		coll.insert(doc);
 		
-		return Response.status(200)
+		return Response.status(201)
 				.entity("addContact is called, firstname: "+firstname+", lastname: "+lastname
 						+", phone: "+phone+", email: "+email)
 				.build();
 	}
 	
-	/*@POST
-	public Response addGroup(
-			@QueryParam("admin") String admin,
-			@QueryParam("label") String label){
+	@POST
+	@Path("group/{admin_id}/{label}/{location}")
+	public Response createGroup(
+			@QueryParam("admin_id") String admin_id,
+			@QueryParam("label") String label,
+			@QueryParam("location") String location){
 				
-			return Response.status(200)
-			.entity("addContact is called, admin: "+admin+", label: "+label)
+			return Response.status(201)
+			.entity("addContact is called, admin: "+admin_id+", label: "+label)
 			.build();
-	}*/
+	}
 	
 
 }
