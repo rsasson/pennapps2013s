@@ -81,7 +81,6 @@ public class AppService {
 			DBCollection events = db.getCollection("event");
 			DBCollection profiles = db.getCollection("profile");
 			
-			
 			BasicDBObject query = new BasicDBObject("phone", phone);
 
 	        DBCursor cursor = profiles.find(query);
@@ -103,7 +102,13 @@ public class AppService {
 					append("profiles", list);
 		
 			events.insert(event);
-				
+			
+			List<DBObject> userEvents = (List<DBObject>)founder.get("events");
+			
+			userEvents.add(new BasicDBObject("name", name).append("location", location));
+			founder.put("events", userEvents);
+			profiles.save(founder);
+			
 			return Response.status(201)
 			.entity("addContact is called, name: "+ name +", location: "+location)
 			.build();
@@ -137,7 +142,7 @@ public class AppService {
             cursor.close();
         }
 		
-		cursor = profiles.find(eventQuery);
+		cursor = events.find(eventQuery);
 		
 		try {
             while(cursor.hasNext()) {
@@ -182,7 +187,7 @@ public class AppService {
             cursor.close();
         }
 		
-        return Response.ok(event.toString()).build();
+        return Response.ok(event.get("profiles").toString()).build();
 	}
 	
 	@GET
@@ -203,7 +208,7 @@ public class AppService {
             cursor.close();
         }
 		
-        return Response.ok(profile.toString()).build();
+        return Response.ok(profile.get("events").toString()).build();
 	}
 	
 }
