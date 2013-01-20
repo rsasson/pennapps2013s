@@ -24,7 +24,6 @@ public class AppService {
 
 	DB db = Main.mongo;
 	
-	
 	@GET
 	@Path("profile/{phone}")
     public Response getProfile(@PathParam("phone") String phone){
