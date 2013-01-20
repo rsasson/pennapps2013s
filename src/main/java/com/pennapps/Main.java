@@ -5,7 +5,6 @@ import org.eclipse.jetty.webapp.WebAppContext;
 
 import com.mongodb.DB;
 import com.mongodb.Mongo;
-import com.mongodb.MongoURI;
 
 /**
  *
